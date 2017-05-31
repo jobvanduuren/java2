@@ -112,9 +112,10 @@
 
     $(document).ready(function() {
       $("input[type=checkbox]").bind('change', toggleDone);
+      $("form").bind('submit', submitTodo);
     });
 
-    $("#total-count").html($(".todo").length);
+
 
     function updateCounters() {
       var todoCount = $(".todo").length;
@@ -125,7 +126,47 @@
       $("#todo-count").html(todoCount - completedCount);
     }
 
+    function submitTodo(event) {
+      event.preventDefault();
 
+      var title = $("#new-todo").val();
+
+      createTodo(title)
+
+      $("#new-todo").val(null);
+      updateCounters();
+    }
+
+    function createTodo(title) {
+      var checkboxId = "todo-" + nextTodoId();
+
+      var listItem = $("<li></li>");
+      listItem.addClass("todo");
+
+      var checkbox = $("<input>");
+      checkbox.attr('type', 'checkbox');
+      checkbox.attr('id', checkboxId);
+      checkbox.val(1);
+      checkbox.bind('change', toggleDone);
+
+        var label = $("<label></label>");
+        label.attr("for", checkboxId);
+        label.html(title);
+
+        listItem.append(checkbox);
+        // listItem.append(space);
+        listItem.append(label);
+
+        $("#todolist").append(listItem);
+
+        updateCounters();
+    }
+
+    function nextTodoId() {
+      return $(".todo").length + 1;
+    }
+
+  $("#total-count").html($(".todo").length);
 
   </script>
 </body>
